@@ -1,6 +1,11 @@
+import loginImage from "../Images/loginImage";
+
 const Login = () => {
   return (
-    <h1>Login</h1>
+    <div>
+      <h1>Login</h1>
+      <img src={loginImage} />
+    </div>
   );
 };
 
