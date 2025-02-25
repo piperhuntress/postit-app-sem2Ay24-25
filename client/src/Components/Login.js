@@ -19,27 +19,27 @@ const Login = () => {
         <img src={logo} />
         <Form>
           <Row>
-            <Col md={3}>
+            <Col md={5}>
               Username<br></br>
-              <Input type="text"></Input>
+              <Input type="email" name="email"></Input>
             </Col>
           </Row>
 
           <Row>
-            <Col md={3}>
+            <Col md={5}>
               Password<br></br>
-              <Input type="password"></Input>
+              <Input type="password" name="password"></Input>
             </Col>
           </Row>
 
           <Row>
-            <Col md={3}>
+            <Col md={5}>
               <Button>Login</Button>
             </Col>
           </Row>
 
           <Row>
-            <Col md={3}>
+            <Col md={6}>
               <p className="smalltext">
                 No Account? <Link to="/register">Sign Up now.</Link>
               </p>
