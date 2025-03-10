@@ -6,6 +6,15 @@ const initialState = { value: UsersData }; //list of user is an object with empt
 export const userSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {},
+  reducers: {
+    addUser: (state, action) => {
+      state.value.push(action.payload);
+    },
+    deleteUser: (state, action) => {},
+    updateUser: (state, action) => {},
+  },
 });
+
+export const { addUser, deleteUser, updateUser } = userSlice.actions; //export the function
+
 export default userSlice.reducer;
