@@ -52,6 +52,11 @@ const Register = () => {
     }
   };
 
+  const handleDelete = (email) => {
+    dispatch(deleteUser(email));
+    alert("User deleted.");
+  };
+
   return (
     <Container>
       <h1>Register</h1>
@@ -127,7 +132,12 @@ const Register = () => {
                   <td>{user.email}</td>
                   <td>{user.password}</td>
                   <td>
-                    <button className="btn btn-danger">Delete</button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleDelete(user.email)}
+                    >
+                      Delete
+                    </button>
                   </td>
                   <td>
                     <button className="btn btn-primary">Update</button>
