@@ -3,7 +3,6 @@ import { userSchemaValidation } from "../Validations/UserValidations";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Link } from "react-router-dom";
 
 import {
   Button,
@@ -20,7 +19,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { addUser, deleteUser, updateUser } from "../Features/UserSlice";
 
-const Register = () => {
+const UpdateUser = () => {
   const {
     register,
     handleSubmit,
@@ -60,7 +59,7 @@ const Register = () => {
 
   return (
     <Container>
-      <h1>Register</h1>
+      <h1>Update User</h1>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col md={6}>
@@ -118,41 +117,12 @@ const Register = () => {
         </Row>
         <Row>
           <Col md={6}>
-            <Button>Register</Button>
+            <Button>Update User</Button>
           </Col>
         </Row>
       </Form>
-      <Row>
-        <Col md={6}>
-          <h1>List of Users</h1>
-          <table className="table">
-            <tbody>
-              {userList.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>{user.password}</td>
-                  <td>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => handleDelete(user.email)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                  <td>
-                    <Link to="/update">
-                      <button className="btn btn-primary">Update</button>
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Col>
-      </Row>
     </Container>
   );
 };
 
-export default Register;
+export default UpdateUser;
