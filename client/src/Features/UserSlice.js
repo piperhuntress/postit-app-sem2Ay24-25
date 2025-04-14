@@ -1,7 +1,34 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { UsersData } from "../ExampleData";
+import axios from "axios";
 
-const initialState = { value: UsersData }; //list of user is an object with empty array as initial value
+//const initialState = { value: UsersData }; //list of user is an object with empty array as initial value
+const initialState = {
+  user: {},
+  isLoading: false,
+  isSuccess: false,
+  isError: false,
+};
+
+//Create the thunk
+export const registerUser = createAsyncThunk(
+  "users/registerUser",
+  async (userData) => {
+    try {
+      const response = await axios.post("http://localhost:3001/registerUser", {
+        name: userData.name,
+        email: userData.email,
+        password: userData.password,
+      });
+      console.log(response);
+      const user = response.data.user; //retrieve the response from the server
+      const msg = response.data.msg;
+      return user; //return the response from the server as payload to the thunk
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
 export const userSlice = createSlice({
   name: "users",
@@ -21,6 +48,18 @@ export const userSlice = createSlice({
         }
       });
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(registerUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.isSuccess = true;
+      })
+      .addCase(registerUser.rejected, (state) => {
+        state.isError = true;
+      });
   },
 });
 
