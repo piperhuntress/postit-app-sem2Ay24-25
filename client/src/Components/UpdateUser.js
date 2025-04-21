@@ -18,8 +18,13 @@ import logo from "../Images/logo-t.png";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { addUser, deleteUser, updateUser } from "../Features/UserSlice";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const UpdateUser = () => {
+  const Email = useSelector((state) => state.users.user.email);
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -56,6 +61,12 @@ const UpdateUser = () => {
     dispatch(deleteUser(email));
     alert("User deleted.");
   };
+
+  useEffect(() => {
+    if (!Email) {
+      navigate("/login");
+    }
+  }, [Email]);
 
   return (
     <Container>
