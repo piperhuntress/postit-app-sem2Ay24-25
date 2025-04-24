@@ -83,6 +83,19 @@ app.post("/savePost", async (req, res) => {
     res.status(500).json({ error: "An error occurred" });
   }
 });
+//API for displaying posts
+app.get("/getPosts", async (req, res) => {
+  try {
+    // Fetch all posts from the "PostModel" collection, sorted by createdAt in descending order
+    const posts = await PostModel.find({}).sort({ createdAt: -1 });
+    const countPost = await PostModel.countDocuments({});
+    res.send({ posts: posts, count: countPost });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred" });
+  }
+});
+
 app.listen(3001, () => {
   console.log("You are connected thank you");
 });

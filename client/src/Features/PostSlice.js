@@ -23,6 +23,15 @@ export const savePost = createAsyncThunk(
   }
 );
 
+export const getPosts = createAsyncThunk("post/getPosts", async () => {
+  try {
+    const response = await axios.get("http://localhost:3001/getPosts");
+    return response.data.posts;
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
 const postSlice = createSlice({
   name: "posts",
   initialState: initialState,
@@ -39,6 +48,19 @@ const postSlice = createSlice({
         state.posts.unshift(action.payload);
       })
       .addCase(savePost.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(getPosts.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getPosts.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        // Update the state with fetched posts
+        console.log(action.payload);
+        state.posts = action.payload;
+      })
+      .addCase(getPosts.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
