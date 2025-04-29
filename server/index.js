@@ -96,6 +96,44 @@ app.get("/getPosts", async (req, res) => {
   }
 });
 
+app.put("/likePost/:postId", async (req, res) => {
+  const postId = req.params.postId; //Extract the ID of the post from the URL
+  const userId = req.body.userId;
+  try {
+    //This code will toogle from like to unlike
+
+    if (userIndex !== -1) {
+      // User has already liked the post, so unlike it
+
+      const udpatedPost = await PostModel.findOneAndUpdate(
+        { _id: postId },
+        {
+          $inc: { "likes.count": -1 }, // Decrement the like count $inc and $pull are update operators
+          $pull: { "likes.users": userId }, // Remove userId from the users array
+        },
+        { new: true } // Return the modified document
+      );
+
+      res.json({ post: udpatedPost, msg: "Post unliked." });
+    } else {
+      // User hasn't liked the post, so like it
+
+      const updatedPost = await PostModel.findOneAndUpdate(
+        { _id: postId },
+        {
+          $inc: { "likes.count": 1 }, // Increment the like count
+          $addToSet: { "likes.users": userId }, // Add userId to the users array if not already present
+        },
+        { new: true } // Return the modified document
+      );
+      res.json({ post: updatedPost, msg: "Post liked." });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "An error occurred" });
+  }
+});
+
 app.listen(3001, () => {
   console.log("You are connected thank you");
 });
