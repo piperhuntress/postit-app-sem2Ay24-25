@@ -4,14 +4,25 @@ import express from "express";
 import UserModel from "./Models/UserModel.js";
 import PostModel from "./Models/PostModel.js";
 import bcrypt from "bcrypt";
+import * as ENV from "./config.js";
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+//Middleware
+
+const corsOptions = {
+  origin: ENV.CLIENT_URL, //client URL local
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, // Enable credentials (cookies, authorization headers, etc.)
+};
+
+app.use(cors(corsOptions));
 
 //Database connection
-const connectString =
-  "mongodb+srv://admin:admin12345@postitcluster.vcbpdnh.mongodb.net/postITDb?retryWrites=true&w=majority&appName=PostITCluster";
+// const connectString =
+//   "mongodb+srv://admin:admin12345@postitcluster.vcbpdnh.mongodb.net/postITDb?retryWrites=true&w=majority&appName=PostITCluster";
+
+const connectString = `mongodb+srv://${ENV.DB_USER}:${ENV.DB_PASSWORD}@${ENV.DB_CLUSTER}/${ENV.DB_NAME}?retryWrites=true&w=majority&appName=${ENV.DB_APP_NAME}`;
 
 mongoose.connect(connectString);
 //API Routes
@@ -105,7 +116,7 @@ app.put("/likePost/:postId", async (req, res) => {
     if (userIndex !== -1) {
       // User has already liked the post, so unlike it
 
-      const udpatedPost = await PostModel.findOneAndUpdate(
+      const updatedPost = await PostModel.findOneAndUpdate(
         { _id: postId },
         {
           $inc: { "likes.count": -1 }, // Decrement the like count $inc and $pull are update operators
@@ -114,7 +125,7 @@ app.put("/likePost/:postId", async (req, res) => {
         { new: true } // Return the modified document
       );
 
-      res.json({ post: udpatedPost, msg: "Post unliked." });
+      res.json({ post: updatedPost, msg: "Post unliked." });
     } else {
       // User hasn't liked the post, so like it
 
@@ -134,6 +145,7 @@ app.put("/likePost/:postId", async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
-  console.log("You are connected thank you");
+const port = ENV.PORT || 3001;
+app.listen(port, () => {
+  console.log(`You are connected at port: ${port}`);
 });
