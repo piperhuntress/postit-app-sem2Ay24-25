@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import * as ENV from "../config";
+import * as ENV from "../config.js";
 
 const initialState = {
   posts: [],
@@ -34,6 +34,7 @@ export const getPosts = createAsyncThunk("post/getPosts", async () => {
   }
 });
 export const likePost = createAsyncThunk("posts/likePost", async (postData) => {
+  //console.log(postData);
   try {
     //Pass along the URL the postId
     const response = await axios.put(
@@ -43,6 +44,7 @@ export const likePost = createAsyncThunk("posts/likePost", async (postData) => {
       }
     );
     const post = response.data.post;
+    console.log(post);
     return post;
   } catch (error) {
     console.log(error);
