@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 import * as ENV from "./config.js";
 
 const app = express();
-app.use(express.json());
+
 //Middleware
 console.log(ENV);
 const corsOptions = {
@@ -16,14 +16,14 @@ const corsOptions = {
   credentials: true, // Enable credentials (cookies, authorization headers, etc.)
 };
 
-//app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
+app.use(express.json());
 
 //Database connection
-//const connectString =
-//"mongodb+srv://admin:admin12345@postitcluster.vcbpdnh.mongodb.net/postITDb?retryWrites=true&w=majority&appName=PostITCluster";
-
 const connectString = `mongodb+srv://${ENV.DB_USER}:${ENV.DB_PASSWORD}@${ENV.DB_CLUSTER}/${ENV.DB_NAME}?retryWrites=true&w=majority&appName=${ENV.DB_APP_NAME}`;
+
+// const connectString =
+//   "mongodb+srv://admin:admin12345@postitcluster.vcbpdnh.mongodb.net/postITDb?retryWrites=true&w=majority&appName=PostITCluster";
 
 mongoose.connect(connectString);
 //API Routes
